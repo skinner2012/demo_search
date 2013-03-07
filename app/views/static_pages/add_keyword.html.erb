@@ -1,0 +1,12 @@
+<div class="center hero-unit">
+  <h1>Add the Keyword</h1>
+</div>
+
+<div class="center row">
+  <div class="span6 offset3">
+    <%= form_for(:add) do |f| %>
+      <%= f.text_field :keyword %>
+      <%= f.submit "Add", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

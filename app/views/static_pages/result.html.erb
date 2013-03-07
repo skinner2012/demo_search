@@ -1,0 +1,12 @@
+<div class="center hero-unit">
+  <h1>Query Result</h1>
+</div>
+
+<ul>
+  <% @query_result.each do |keywordset| %>
+    <li>
+      <%= keywordset.keyword %>
+    </li>
+  <% end %>
+</ul>
+

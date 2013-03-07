@@ -1,0 +1,11 @@
+<div class="center hero-unit">
+  <h1>List All the Keywords</h1>
+</div>
+
+<ul>
+  <% @keywords.each do |keywordset| %>
+    <li>
+      <%= keywordset.keyword %>
+    </li>
+  <% end %>
+</ul>

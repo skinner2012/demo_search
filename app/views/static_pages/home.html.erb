@@ -1,0 +1,13 @@
+<div class="center hero-unit">
+  <h1>Micro Search</h1>
+</div>
+
+<div class="center row">
+  <div class="span6 offset3">
+    <%= form_for(:search, url: "result") do |f| %>
+      <%= f.text_field :keyword %>
+      <%= f.submit "Search", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+

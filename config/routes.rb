@@ -1,4 +1,14 @@
 DemoSearch::Application.routes.draw do
+  root to: 'static_pages#home'
+
+  match '/home',         to: 'static_pages#home'
+  match '/help',         to: 'static_pages#help'
+  match '/addkeyword',   to: 'static_pages#add_keyword'
+  match '/listkeywords', to: 'static_pages#list_all_keywords'
+  match '/about',        to: 'static_pages#about'
+  match '/contact',      to: 'static_pages#contact'
+  match '/result',       to: 'static_pages#result'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
