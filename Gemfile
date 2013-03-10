@@ -18,7 +18,8 @@ group :assets do
   gem 'uglifier', '1.2.3'
 end
 
-gem 'jquery-rails', '2.0.2'
+gem 'jquery-rails', '~> 2.1'
+gem 'rails3-jquery-autocomplete'
 
 group :production do
   gem 'pg', '0.12.2'

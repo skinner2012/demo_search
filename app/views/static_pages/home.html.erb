@@ -5,7 +5,7 @@
 <div class="center row">
   <div class="span6 offset3">
     <%= form_for(:search, url: "result") do |f| %>
-      <%= f.text_field :keyword %>
+      <%= f.text_field :keyword, class: "input-medium search-query", :'data-autocomplete' => "static_pages/autocomplete_key_word_set_keyword"  %>
       <%= f.submit "Search", class: "btn btn-primary" %>
     <% end %>
   </div>

@@ -23,6 +23,10 @@ DemoSearch::Application.routes.draw do
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
 
+  resources :static_pages do
+    get :autocomplete_key_word_set_keyword, :on => :collection
+  end
+
   # Sample resource route with options:
   #   resources :products do
   #     member do

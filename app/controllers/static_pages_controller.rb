@@ -1,4 +1,6 @@
 class StaticPagesController < ApplicationController
+  autocomplete :key_word_set, :keyword
+
   def home
   end
 
