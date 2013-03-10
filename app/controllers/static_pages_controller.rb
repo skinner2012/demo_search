@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  autocomplete :key_word_set, :keyword
+  autocomplete :key_word_set, :keyword, :limit => 5
 
   def home
   end

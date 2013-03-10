@@ -192,6 +192,7 @@
 	top: 0;
 	left: 0;
 	cursor: default;
+	/* max-height: 100px; overflow-y: scroll; overflow-x: hidden; */
 }
 .ui-button {
 	display: inline-block;
