@@ -53,9 +53,12 @@
 
       jQuery(e).autocomplete({
         source: function( request, response ) {
-          jQuery.getJSON( jQuery(e).attr('data-autocomplete'), {
+          //jQuery.getJSON( jQuery(e).attr('data-autocomplete'), {
+          url = "http://rest.mooneygroup.org/terms?name=" + request.term + "&format=JSON";
+          jQuery.getJSON( url + '&callback=?' , {
             term: extractLast( request.term )
           }, function() {
+            //alert("SKINNER: " + response + " " + data);
             if(arguments[0].length == 0) {
               arguments[0] = []
               arguments[0][0] = { id: "", label: "no existing match" }
