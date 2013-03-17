@@ -1,0 +1,10 @@
+<hr>
+
+<ul>
+  <% @query_result.each do |keyword| %>
+    <li>
+      <h4><%= link_to keyword["value"], details_path(:terms => keyword["value"]) %></h4>
+    </li>
+  <% end %>
+</ul>
+

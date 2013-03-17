@@ -3,9 +3,9 @@
 </div>
 
 <ul>
-  <% @query_result.each do |keywordset| %>
+  <% @query_result.each do |keyword| %>
     <li>
-      <%= keywordset.keyword %>
+      <%= keyword["value"] %>
     </li>
   <% end %>
 </ul>
