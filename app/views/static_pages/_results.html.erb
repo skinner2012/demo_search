@@ -20,8 +20,10 @@
   <h3>Other hits</h3>
 </div>
 
+<%= will_paginate %>
+
 <ul>
-  <% @query_result.each do |keyword| %>
+  <% @static_pages.each do |keyword| %>
     <% if @search_term.downcase != keyword["value"].downcase %>
       <li>
         <h4><%= link_to keyword["value"], details_path(:terms => keyword["value"]) %></h4>
@@ -29,4 +31,6 @@
     <% end %>
   <% end %>
 </ul>
+
+<%= will_paginate %>
 

@@ -1,23 +1,30 @@
 require 'net/http'
 require 'json'
+require 'will_paginate/array'
 
 class StaticPagesController < ApplicationController
   autocomplete :key_word_set, :keyword, :limit => 5
 
   def home
     if params.has_key?(:search)
+      session[:search_keyword] = params[:search][:keyword]
       escape_keyword = URI.escape(params[:search][:keyword])
       json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms?name=" + escape_keyword + "&format=JSON&limit=-1"))
       @search_term = params[:search][:keyword]
       @query_result = ActiveSupport::JSON.decode(json_result)
-   end
+      @static_pages = @query_result.paginate(page: params[:page])
+    elsif params.has_key?(:page)
+      escape_keyword = URI.escape(session[:search_keyword])
+      json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms?name=" + escape_keyword + "&format=JSON&limit=-1"))
+      @search_term = session[:search_keyword]
+      @query_result = ActiveSupport::JSON.decode(json_result)
+      @static_pages = @query_result.paginate(page: params[:page])
+    end
   end
 
   def result
     # @query_result = KeyWordSet.find_by_keyword(params[:search][:keyword])
     # @query_result = KeyWordSet.where("lower(keyword) LIKE ?", "%#{params[:search][:keyword].downcase}%")
-    # json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms?name=" + params[:search][:keyword] + "&format=JSON&limit=-1"))
-    # @query_result = ActiveSupport::JSON.decode(json_result)
   end
 
   def details
