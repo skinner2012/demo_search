@@ -6,7 +6,9 @@ class StaticPagesController < ApplicationController
 
   def home
     if params.has_key?(:search)
-      json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms?name=" + params[:search][:keyword] + "&format=JSON&limit=-1"))
+      escape_keyword = URI.escape(params[:search][:keyword])
+      json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms?name=" + escape_keyword + "&format=JSON&limit=-1"))
+      @search_term = params[:search][:keyword]
       @query_result = ActiveSupport::JSON.decode(json_result)
    end
   end

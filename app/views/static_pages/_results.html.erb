@@ -1,10 +1,32 @@
 <hr>
 
+<div class="alert alert-success">
+  <h3>Exact match</h3>
+</div>
+
 <ul>
   <% @query_result.each do |keyword| %>
-    <li>
-      <h4><%= link_to keyword["value"], details_path(:terms => keyword["value"]) %></h4>
-    </li>
+    <% if @search_term.downcase == keyword["value"].downcase %>
+      <li>
+        <h4><%= link_to keyword["value"], details_path(:terms => keyword["value"]) %></h4>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<hr>
+
+<div class="alert alert-block">
+  <h3>Other hits</h3>
+</div>
+
+<ul>
+  <% @query_result.each do |keyword| %>
+    <% if @search_term.downcase != keyword["value"].downcase %>
+      <li>
+        <h4><%= link_to keyword["value"], details_path(:terms => keyword["value"]) %></h4>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
