@@ -29,6 +29,7 @@ class StaticPagesController < ApplicationController
 
   def details
     @terms = params[:terms]
+    render :layout => "show_cytoscape"
   end
 
   def help
