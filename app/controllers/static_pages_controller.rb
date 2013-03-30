@@ -32,8 +32,17 @@ class StaticPagesController < ApplicationController
   end
 
   def details
-    @terms = params[:terms]
+    @select_term = params[:select_term]
+    @select_ontology = params[:select_ontology]
     render :layout => "show_cytoscape"
+  end
+
+  def ontology
+    @term_name = params[:term_name]
+    escape_term_name = URI.escape(params[:term_name])
+    ontology_json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/get_ontologies?termname=" + escape_term_name))
+    @ontology_results = ActiveSupport::JSON.decode(ontology_json_result)
+    render layout: false
   end
 
   def help

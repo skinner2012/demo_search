@@ -9,6 +9,7 @@ DemoSearch::Application.routes.draw do
   match '/contact',      to: 'static_pages#contact'
   match '/result',       to: 'static_pages#result'
   match '/details',      to: 'static_pages#details'
+  match '/ontology',     to: 'static_pages#ontology'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
