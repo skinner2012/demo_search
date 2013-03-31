@@ -33,8 +33,11 @@ class StaticPagesController < ApplicationController
 
   def details
     @select_term = params[:select_term]
+    session[:select_term] = params[:select_term]
     @select_ontology = params[:select_ontology]
-    render :layout => "show_cytoscape"
+    session[:select_ontology] = params[:select_ontology]
+    # render :layout => "show_cytoscape"
+    render layout: false
   end
 
   def ontology
