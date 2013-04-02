@@ -17,10 +17,38 @@
     <div id="details_list">
       <%= render 'layouts/header' %>
       <br><br>
-      <div class="span9"><h4><%= @select_term %> - <%= @select_ontology %></h4></div>
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span6">
+            <dl class="dl-horizontal">
+              <dt>Term</dt><dd><%= @term_name %> (<%= @term_id %>)</dd>
+              <dt>Ontology</dt><dd><%= @ontology_name %> (<%= @ontology_id %>)</dd>
+              <dt>Bioportal</dt><dd><%= link_to @bioportal_url, @bioportal_url, :target => '_blank' %></dd>
+              <% if @auc.nil? %>
+                <dt>AUC</dt><dd>N/A</dd>
+              <% else %>
+                <dt>AUC</dt><dd><%= @auc %></dd>
+              <% end %>
+              <dt>Number of Genes</dt><dd><%= @num_of_genes %></dd>
+            </dl>
+          </div>
+          <div class="span6">
+            <dl class="dl-horizontal">
+              <dt>List of Genes</dt>
+              <dd>
+                <select multiple="multiple">
+                  <% @gene_list.each do |gene| %>
+                    <option><%= gene[1] %> (<%= gene[0] %>)</option>
+                  <% end %> 
+                </select>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="network_visualization">
-      <iframe src="http://genemania.org/link?o=3702&g=PHYB|ELF3|COP1|SPA1|FUS9" width="100%" height="100%"></iframe>
+      <iframe src="http://genemania.org/search/human/<%= @genes %>" width="100%" height="100%"></iframe>
     </div>
   </body>
 </html>

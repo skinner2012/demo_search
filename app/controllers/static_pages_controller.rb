@@ -36,6 +36,43 @@ class StaticPagesController < ApplicationController
     session[:select_term] = params[:select_term]
     @select_ontology = params[:select_ontology]
     session[:select_ontology] = params[:select_ontology]
+
+    escape_select_term = URI.escape(params[:select_term])
+    escape_select_ontology = URI.escape(params[:select_ontology])
+    json_details_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms_details?name=" + escape_select_term + "&ontology=" + escape_select_ontology))
+    @details_result = ActiveSupport::JSON.decode(json_details_result)
+
+    @details_result.each do |item|
+      if item["label"] == "ontologyid"
+        @ontology_id = item["value"]
+      elsif item["label"] == "ontologyName"
+        @ontology_name = item["value"]
+      elsif item["label"] == "termid"
+        @term_id = item["value"]
+      elsif item["label"] == "termName"
+        @term_name = item["value"]
+      elsif item["label"] == "bioportalURL"
+        @bioportal_url = item["value"]
+      elsif item["label"] == "genes"
+        @gene_list = item["value"]
+      elsif item["label"] == "numberOfGenes"
+        @num_of_genes = item["value"]
+      elsif item["label"] == "AUC"
+        @auc = item["value"]
+      end
+    end
+
+    index = 0
+    @genes = ""
+    @gene_list.each do |gene|
+      if index == 0
+        @genes.concat(gene[1])
+      else
+        @genes.concat("|" + gene[1])
+      end
+      index = index + 1
+    end
+
     # render :layout => "show_cytoscape"
     render layout: false
   end
