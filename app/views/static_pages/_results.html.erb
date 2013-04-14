@@ -4,15 +4,15 @@
   <h3>Exact match</h3>
 </div>
 
-<ul>
-  <% @query_result.each do |keyword| %>
-    <% if @search_term.downcase == keyword["value"].downcase %>
-      <li>
-        <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox" %></h4>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+<% if !@exact_match.empty? %>
+  <ul>
+    <li>
+      <h4><%= link_to @exact_match[0], ontology_path(:term_name => @exact_match[0]), :rel => "facebox" %></h4>
+    </li>
+  </ul>
+<% else %>
+  <p class="lead text-error text-center">Nothing Found</p>
+<% end %>
 
 <hr>
 
@@ -20,21 +20,22 @@
   <h3>Other hits</h3>
 </div>
 
-<%= render 'anchor_letter' %>
-<br><br>
+<% if !@other_hits.empty? %>
+  <%= render 'anchor_letter' %>
 
-<ul>
-  <% @query_result.each do |keyword| %>
-    <% if @search_term.downcase != keyword["value"].downcase %>
+  <ul>
+    <% @other_hits.each do |keyword| %>
       <li>
-        <% if @anchors[keyword["value"][0].upcase] == 0 %>
-          <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox", :name => keyword["value"][0].upcase %></h4>
-          <% @anchors[keyword["value"][0].upcase] = 1 %>
+        <% if @anchors[keyword[0].upcase] == 0 %>
+          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :rel => "facebox", :name => keyword[0].upcase %></h4>
+          <% @anchors[keyword[0].upcase] = 1 %>
         <% else %>
-          <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox" %></h4>
+          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :rel => "facebox" %></h4>
         <% end %>
       </li>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+<% else %>
+  <p class="lead text-error text-center">Nothing Found</p>
+<% end %>
 

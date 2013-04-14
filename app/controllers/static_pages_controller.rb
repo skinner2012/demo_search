@@ -10,6 +10,9 @@ class StaticPagesController < ApplicationController
     letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     letters.each{ |letter| @anchors[letter] = 0 } 
 
+    @search_tem = ""
+    @query_result = []
+
     if params.has_key?(:search)
       session[:search_keyword] = params[:search][:keyword]
       escape_keyword = URI.escape(params[:search][:keyword])
@@ -23,6 +26,17 @@ class StaticPagesController < ApplicationController
       @search_term = session[:search_keyword]
       @query_result = ActiveSupport::JSON.decode(json_result)
       # @static_pages = @query_result.paginate(page: params[:page])
+    end
+
+    @exact_match = [] 
+    @other_hits = []
+
+    @query_result.each do |keyword|
+      if @search_term.downcase == keyword["value"].downcase
+        @exact_match.push(keyword["value"])
+      else
+        @other_hits.push(keyword["value"])
+      end
     end
   end
 
@@ -64,11 +78,14 @@ class StaticPagesController < ApplicationController
 
     index = 0
     @genes = ""
+    @genes_for_yql = ""
     @gene_list.each do |gene|
       if index == 0
         @genes.concat(gene[1])
+        @genes_for_yql.concat(gene[1])
       else
         @genes.concat("|" + gene[1])
+        @genes_for_yql.concat("%7C" + gene[1])
       end
       index = index + 1
     end

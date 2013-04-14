@@ -1,0 +1,39 @@
+<hr>
+
+<div class="alert alert-success">
+  <h3>Exact match</h3>
+</div>
+
+<ul>
+  <% @query_result.each do |keyword| %>
+    <% if @search_term.downcase == keyword["value"].downcase %>
+      <li>
+        <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox" %></h4>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<hr>
+
+<div class="alert alert-block">
+  <h3>Other hits</h3>
+</div>
+
+<%= render 'anchor_letter' %>
+
+<ul>
+  <% @query_result.each do |keyword| %>
+    <% if @search_term.downcase != keyword["value"].downcase %>
+      <li>
+        <% if @anchors[keyword["value"][0].upcase] == 0 %>
+          <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox", :name => keyword["value"][0].upcase %></h4>
+          <% @anchors[keyword["value"][0].upcase] = 1 %>
+        <% else %>
+          <h4><%= link_to keyword["value"], ontology_path(:term_name => keyword["value"]), :rel => "facebox" %></h4>
+        <% end %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
