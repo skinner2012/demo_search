@@ -7,7 +7,9 @@
 <% if !@exact_match.empty? %>
   <ul>
     <li>
-      <h4><%= link_to @exact_match[0], ontology_path(:term_name => @exact_match[0]), :rel => "facebox" %></h4>
+      <div class="show_ontology" term_name="<%= @exact_match[0] %>">
+      <h4><%= link_to @exact_match[0], ontology_path(:term_name => @exact_match[0]) %></h4>
+      </div>
     </li>
   </ul>
 <% else %>
@@ -27,10 +29,14 @@
     <% @other_hits.each do |keyword| %>
       <li>
         <% if @anchors[keyword[0].upcase] == 0 %>
-          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :rel => "facebox", :name => keyword[0].upcase %></h4>
+          <div class="show_ontology" term_name="<%= keyword %>">
+          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :"term_name" => keyword, :name => keyword[0].upcase %></h4>
+          </div>
           <% @anchors[keyword[0].upcase] = 1 %>
         <% else %>
-          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :rel => "facebox" %></h4>
+          <div class="show_ontology" term_name="<%= keyword %>">
+          <h4><%= link_to keyword, ontology_path(:term_name => keyword), :"term_name" => keyword %></h4>
+          </div>
         <% end %>
       </li>
     <% end %>

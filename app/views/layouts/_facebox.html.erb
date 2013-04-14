@@ -1,8 +1,37 @@
 <script type="text/javascript">
   jQuery(document).ready(function($) {
+    $(".show_ontology").click(function (event) {
+      term_name = $(this).attr('term_name');
+      escape_term_name = escape(term_name);
+      url = "http://rest.mooneygroup.org/get_ontologies?termname=" + escape_term_name + "&callback=?";
+
+      $.getJSON(url, function(ontology_json) {
+        ontology_array = $.parseJSON(JSON.stringify(ontology_json));
+
+        if (ontology_array.length == 1) {
+          escape_ontology_name = escape(ontology_array[0]["value"]);
+          window.location.href = "/details?select_ontology=" + escape_ontology_name + "&select_term=" + escape_term_name;
+        } else {
+          facebox_source = "<ul class=\"nav nav-list\"><li><p class=\"muted\">The term <strong>" + term_name + "</strong> has been found in multiple ontologies. Please select the ontology: </p></li><li class=\"divider\">";
+
+          $.each(ontology_array, function (index, value) {
+            escape_ontology_name = escape(value["value"]);
+            facebox_source += "<li><a href=/details?select_ontology=" + escape_ontology_name + "&select_term=" + escape_term_name + ">" + value["value"] + "</a></li>";
+          });
+
+          facebox_source += "</li></ul>";
+
+          $.facebox(facebox_source);
+        }
+      });
+
+      event.preventDefault();
+    });
+
     $('a[rel*=facebox]').facebox({
       loadingImage : '/assets/loading.gif',
       closeImage   : '/assets/closelabel.png'
     })
   })
 </script>
+

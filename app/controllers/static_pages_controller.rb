@@ -5,6 +5,8 @@ require 'will_paginate/array'
 class StaticPagesController < ApplicationController
   autocomplete :key_word_set, :keyword, :limit => 5
 
+  before_filter :pre_ontology, only: :ontology
+
   def home
     @anchors = {}
     letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
@@ -124,4 +126,20 @@ class StaticPagesController < ApplicationController
 
   def contact
   end
+
+  private
+
+    def pre_ontology
+      @term_name = params[:term_name]
+      escape_term_name = URI.escape(params[:term_name])
+      ontology_json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/get_ontologies?termname=" + escape_term_name))
+      @ontology_results = ActiveSupport::JSON.decode(ontology_json_result)
+
+      if @ontology_results.length == 1
+        redirect_to details_path(:select_ontology => @ontology_results[0]["value"], :select_term => @term_name)
+      else
+        render :partial => "facebox_popup"
+      end
+   end
+
 end

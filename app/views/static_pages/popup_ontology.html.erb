@@ -1,0 +1,10 @@
+<ul class="nav nav-list">
+  <li><p class="muted">The term <strong><%= @term_name %></strong> has been found in multiple ontologies. Please select the ontology: </p></li>
+  <li class="divider"></li> 
+
+  <% @ontology_results.each do |ontology_name| %>
+    <li>
+      <%= link_to ontology_name["value"], details_path(:select_ontology => ontology_name["value"], :select_term => @term_name) %>
+    </li>
+  <% end %> 
+</ul>
