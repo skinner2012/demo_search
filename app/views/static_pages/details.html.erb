@@ -3,9 +3,12 @@
 <head>
   <title><%= full_title(yield(:title)) %></title>
   <%= stylesheet_link_tag    "application", media: "all" %>
-  <%= javascript_include_tag "jquery-1.9.1.js" %>
+  <%= javascript_include_tag "jquery-1.9.1.js", "facebox.js" %>
+  <%= stylesheet_link_tag "facebox_2.css" %>
+  <%= render 'layouts/facebox' %>
   <script type="text/javascript">
     $(document).ready(function(){
+      /*
       doYQL("http://genemania.org/search/human/<%= @genes_for_yql %>");
       function doYQL(site) {
         var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent('select * from html where url="' + site + '"');
@@ -24,6 +27,7 @@
           }
         });
       }
+      */
     });
   </script>
   <style>
@@ -56,6 +60,7 @@
           <dt>AUC</dt><dd><%= @auc %></dd>
         <% end %>
         <dt>Number of Genes</dt><dd><%= @num_of_genes %></dd>
+        <dt>List of Genes</dt><dd><%= link_to "Display All", display_all_genes_path(), :rel => "facebox" %></dd>
         <br>
         <table class="table table-condensed">
           <tr><td><strong>Gene Name</strong></td><td><strong>Gene ID</strong></td></tr>

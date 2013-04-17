@@ -1,0 +1,13 @@
+<table class="table table-condensed">
+  <tr><td><strong>Gene Name</strong></td><td><strong>Gene ID</strong></td><td><strong>Gene Name</strong></td><td><strong>Gene ID</strong></td><td><strong>Gene Name</strong></td><td><strong>Gene ID</strong></td></tr>
+    <% @gene_list.each.with_index do |gene, index| %>
+      <% if index % 3 == 0 %>
+        <tr><td><%= gene[1] %></td><td><%= gene[0] %></td>
+      <% elsif index % 3 == 1 %>
+        <td><%= gene[1] %></td><td><%= gene[0] %></td>
+      <% elsif index % 3 == 2 %>
+        <td><%= gene[1] %></td><td><%= gene[0] %></td></tr>
+      <% end %>
+    <% end %>
+</table>
+

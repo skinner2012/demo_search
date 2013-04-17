@@ -78,18 +78,20 @@ class StaticPagesController < ApplicationController
       end
     end
 
-    index = 0
-    @genes = ""
-    @genes_for_yql = ""
-    @gene_list.each do |gene|
-      if index == 0
-        @genes.concat(gene[1])
-        @genes_for_yql.concat(gene[1])
-      else
-        @genes.concat("|" + gene[1])
-        @genes_for_yql.concat("%7C" + gene[1])
+    if @num_of_genes <= 100
+      index = 0
+      @genes = ""
+      @genes_for_yql = ""
+      @gene_list.each do |gene|
+        if index == 0
+          @genes.concat(gene[1])
+          @genes_for_yql.concat(gene[1])
+        else
+          @genes.concat("|" + gene[1])
+          @genes_for_yql.concat("%7C" + gene[1])
+        end
+        index = index + 1
       end
-      index = index + 1
     end
 
     # render :layout => "show_cytoscape"
@@ -101,6 +103,20 @@ class StaticPagesController < ApplicationController
     escape_term_name = URI.escape(params[:term_name])
     ontology_json_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/get_ontologies?termname=" + escape_term_name))
     @ontology_results = ActiveSupport::JSON.decode(ontology_json_result)
+    render layout: false
+  end
+
+  def display_all_genes
+    escape_select_term = URI.escape(session[:select_term])
+    escape_select_ontology = URI.escape(session[:select_ontology])
+    json_details_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms_details?name=" + escape_select_term + "&ontology=" + escape_select_ontology))
+    @details_result = ActiveSupport::JSON.decode(json_details_result)
+
+    @details_result.each do |item|
+      if item["label"] == "genes"
+        @gene_list = item["value"]
+      end
+    end      
     render layout: false
   end
 
@@ -140,6 +156,6 @@ class StaticPagesController < ApplicationController
       else
         render :partial => "facebox_popup"
       end
-   end
+    end
 
 end

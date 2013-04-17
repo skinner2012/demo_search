@@ -10,6 +10,7 @@ DemoSearch::Application.routes.draw do
   match '/result',       to: 'static_pages#result'
   match '/details',      to: 'static_pages#details'
   match '/ontology',     to: 'static_pages#ontology'
+  match '/display_all_genes', to: 'static_pages#display_all_genes'
   match '/popup_ontology', to: 'static_pages#popup_ontology'
 
   # The priority is based upon order of creation:
