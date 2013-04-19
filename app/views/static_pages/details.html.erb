@@ -8,6 +8,18 @@
   <%= render 'layouts/facebox' %>
   <script type="text/javascript">
     $(document).ready(function(){
+      $(".show_more_genes").click(function (event) {
+        $('#more_genes').hide();
+        $('#hide_genes').show();
+        $('#remaining_genes').show();
+        event.preventDefault();
+      });
+      $(".hide_more_genes").click(function (event) {
+        $('#more_genes').show();
+        $('#hide_genes').hide();
+        $('#remaining_genes').hide();
+        event.preventDefault();
+      });
       /*
       doYQL("http://genemania.org/search/human/<%= @genes_for_yql %>");
       function doYQL(site) {
@@ -60,15 +72,43 @@
           <dt>AUC</dt><dd><%= @auc %></dd>
         <% end %>
         <dt>Number of Genes</dt><dd><%= @num_of_genes %></dd>
-        <dt>List of Genes</dt><dd><%= link_to "Display All", display_all_genes_path(), :rel => "facebox" %></dd>
-        <br>
-        <table class="table table-condensed">
-          <tr><td><strong>Gene Name</strong></td><td><strong>Gene ID</strong></td></tr>
-            <% @gene_list.each do |gene| %>
-              <tr><td><%= gene[1] %></td><td><%= gene[0] %></td></tr>
-            <% end %> 
-        </table>
+        <dt>List of Genes</dt>
+        <dd>
+        <!--
+        <%= link_to "Display All", display_all_genes_path(), :rel => "facebox" %>
+        -->
+        </dd>
       </dl></div>
+      <br>
+      <table class="table table-condensed">
+        <tr><td width=50%><strong>Gene Name</strong></td><td width=50%><strong>Gene ID</strong></td></tr>
+        <% @gene_list.each.with_index do |gene, index| %>
+          <% if index <= 100 %>
+            <tr><td width=50%><%= gene[1] %></td><td width=50%><%= gene[0] %></td></tr>
+          <% end %>
+        <% end %>
+      </table>
+      <div id="remaining_genes" style="display: none;">
+        <table class="table table-condensed">
+          <% @gene_list.each.with_index do |gene, index| %>
+            <% if index > 100 %>
+              <tr><td width=50%><%= gene[1] %></td><td width=50%><%= gene[0] %></td></tr>
+            <% end %>
+          <% end %>
+        </table>
+      </div>
+      <div id="more_genes" class="show_more_genes">
+        <% if @gene_list.length > 100 %>
+          <p class="text-center">
+          <%= link_to "More ( " + (@gene_list.length - 100).to_s + " genes total )" %>
+          </p>
+        <% end %>
+      </div>
+      <div id="hide_genes" class="hide_more_genes" style="display: none;">
+        <p class="text-center">
+        <%= link_to "Hide ( " + (@gene_list.length - 100).to_s + " genes total )" %>
+        <p>
+      </div>
     </div>
     <div id="network_visualization" style="overflow-x:hidden; overflow-y:hidden;">
       <% if @num_of_genes <= 100 %>
