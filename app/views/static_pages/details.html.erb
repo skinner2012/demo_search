@@ -20,6 +20,19 @@
         $('#remaining_genes').hide();
         event.preventDefault();
       });
+      $(".show_more_genes_2").click(function (event) {
+        $('#more_genes_2').hide();
+        $('#hide_genes_2').show();
+        $('#remaining_genes_2').show();
+        event.preventDefault();
+      });
+      $(".hide_more_genes_2").click(function (event) {
+        $('#more_genes_2').show();
+        $('#hide_genes_2').hide();
+        $('#remaining_genes_2').hide();
+        event.preventDefault();
+      });
+
       /*
       doYQL("http://genemania.org/search/human/<%= @genes_for_yql %>");
       function doYQL(site) {
@@ -105,6 +118,31 @@
         <% end %>
       </div>
       <div id="hide_genes" class="hide_more_genes" style="display: none;">
+        <p class="text-center">
+        <%= link_to "Hide ( " + (@gene_list.length - 100).to_s + " genes total )" %>
+        <p>
+      </div>
+      <hr>
+      <% @gene_list.each.with_index do |gene, index| %>
+        <% if index <= 100 %>
+          <%= gene[1] %> (<%= gene[0] %></td>), 
+        <% end %>
+      <% end %>
+      <div id="remaining_genes_2" style="display: none;">
+        <% @gene_list.each.with_index do |gene, index| %>
+          <% if index > 100 %>
+            <%= gene[1] %> (<%= gene[0] %></td>),
+          <% end %>
+        <% end %>
+      </div>
+      <div id="more_genes_2" class="show_more_genes_2">
+        <% if @gene_list.length > 100 %>
+          <p class="text-center">
+          <%= link_to "More ( " + (@gene_list.length - 100).to_s + " genes total )" %>
+          </p>
+        <% end %>
+      </div>
+      <div id="hide_genes_2" class="hide_more_genes_2" style="display: none;">
         <p class="text-center">
         <%= link_to "Hide ( " + (@gene_list.length - 100).to_s + " genes total )" %>
         <p>
