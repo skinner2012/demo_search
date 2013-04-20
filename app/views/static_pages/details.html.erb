@@ -154,9 +154,9 @@
       </div>
       -->
     </div>
-    <div id="network_visualization" style="overflow-x:hidden; overflow-y:hidden;">
+    <div id="network_visualization" style="overflow: hidden; position: relative;">
       <% if @num_of_genes <= 100 %>
-        <iframe id="genemania_network_visualization" src="http://genemania.org/search/human/<%= @genes %>&m=automatic&r=0" width="100%" height="100%"></iframe>
+        <iframe id="genemania_network_visualization" src="http://genemania.org/search/human/<%= @genes %>&m=automatic&r=0" style="width: 100%; height:111%; position: absolute; top: -81px;"></iframe>
       <% else %>
         <br><br><br><br><br>
         <div class="container">
