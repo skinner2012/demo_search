@@ -120,6 +120,58 @@ class StaticPagesController < ApplicationController
     render layout: false
   end
 
+  def cytoscape_web
+    escape_select_term = URI.escape(session[:select_term])
+    escape_select_ontology = URI.escape(session[:select_ontology])
+    networks_str = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/getNetworks?name=" + escape_select_term + "&ontology=" + escape_select_ontology))
+    network_weights_str = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/getNetworkWeights?name=" + escape_select_term + "&ontology=" + escape_select_ontology))
+
+    json_details_result = Net::HTTP.get(URI.parse("http://rest.mooneygroup.org/terms_details?name=" + escape_select_term + "&ontology=" + escape_select_ontology))
+    @details_result = ActiveSupport::JSON.decode(json_details_result)
+    @details_result.each do |item|
+      if item["label"] == "genes"
+        @gene_list = item["value"]
+        break
+      end
+    end
+
+    @gene_hash = {}
+    @gene_list.each do |gene|
+      @gene_hash[gene[0]] = gene[1]
+    end
+
+    @get_networks = []
+    networks_list = networks_str.split(/\n/)
+    networks_list.each do |line|
+      single_network = line.split(/\t+/)
+      @get_networks << single_network
+    end 
+
+    pre_network_weight = ""
+    @network_weight_key = ""
+    @network_weights_hash = {}
+    @get_network_weights = []
+    sub_network_weights = []
+    network_weights_list = network_weights_str.split(/\n/)
+    network_weights_list.each do |line|
+      if not line.match(/^\t/)
+        if pre_network_weight != ""
+          @network_weights_hash[pre_network_weight] = sub_network_weights
+          sub_network_weights = []
+        end
+        single_network_weight = line.split(/\t+/)
+        @get_network_weights << single_network_weight
+        pre_network_weight = single_network_weight[0]
+      else
+        single_subnetwork_weight = line.split(/\t+/)
+        single_subnetwork_weight.slice!(0)
+        sub_network_weights << single_subnetwork_weight
+      end
+    end
+    @network_weights_hash[pre_network_weight] = sub_network_weights
+    render layout: false
+  end
+
   def help
   end
 

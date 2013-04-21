@@ -3,9 +3,7 @@
 <head>
   <title><%= full_title(yield(:title)) %></title>
   <%= stylesheet_link_tag    "application", media: "all" %>
-  <%= javascript_include_tag "jquery-1.9.1.js", "facebox.js" %>
-  <%= stylesheet_link_tag "facebox_2.css" %>
-  <%= render 'layouts/facebox' %>
+  <%= javascript_include_tag "jquery-1.9.1.js" %>
   <script type="text/javascript">
     $(document).ready(function(){
       $(".show_more_genes").click(function (event) {
@@ -70,6 +68,7 @@
         <div class="navbar-inner">
           <ul class="nav pull-right">
             <li><%= link_to "Home", root_path %></li>
+            <li><%= link_to "Skinner", cytoscape_web_path, target: '_blank' %></li>
             <li><%= link_to "Help", help_path %></li>
           </ul>
         </div>

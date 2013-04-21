@@ -1,0 +1,33 @@
+<table class="table table-condensed">
+<% @get_networks.each do |single_network| %>
+  <tr>
+  <% single_network.each.with_index do |network_element, index| %>
+    <% if index == 0 || index == 1 %>
+      <td><%= network_element %>(<%= @gene_hash[network_element] %>)</td>
+    <% else %>
+      <td><%= network_element %></td>
+    <% end %>
+  <% end %>
+  </tr>
+<% end %>
+</table>
+
+<hr>
+
+<% @get_network_weights.each do |single_network_weight| %>
+  <table class="table table-condensed">
+  <tr>
+  <% single_network_weight.each.with_index do |network_weight_element, index| %>
+    <% if index == 0 %>
+      <% @network_weight_key = network_weight_element %>
+    <% end %>
+    <td><%= network_weight_element %></td>
+  <% end %>
+  </tr>
+  <% @network_weights_hash[@network_weight_key].each do |item| %>
+    <tr><td></td><td><%= item[0] %></td><td><%= item[1] %></td></tr>
+  <% end %>
+  </table>
+  <hr>
+<% end %>
+
