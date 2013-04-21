@@ -68,7 +68,9 @@
         <div class="navbar-inner">
           <ul class="nav pull-right">
             <li><%= link_to "Home", root_path %></li>
-            <li><%= link_to "Skinner", cytoscape_web_path, target: '_blank' %></li>
+            <% if @num_of_genes >= 5 && @num_of_genes <= 100 %>
+              <li><%= link_to "Skinner", cytoscape_web_path, target: '_blank' %></li>
+            <% end %>
             <li><%= link_to "Help", help_path %></li>
           </ul>
         </div>
