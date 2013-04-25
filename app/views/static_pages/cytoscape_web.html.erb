@@ -1,33 +1,109 @@
-<table class="table table-condensed">
-<% @get_networks.each do |single_network| %>
-  <tr>
-  <% single_network.each.with_index do |network_element, index| %>
-    <% if index == 0 || index == 1 %>
-      <td><%= network_element %>(<%= @gene_hash[network_element] %>)</td>
-    <% else %>
-      <td><%= network_element %></td>
-    <% end %>
-  <% end %>
-  </tr>
-<% end %>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= full_title(yield(:title)) %></title>
+  <%= stylesheet_link_tag    "application", media: "all" %>
+  <%= javascript_include_tag "jquery-1.9.1.js" %>
+  <%= javascript_include_tag "jquery.collapse.js" %>
+  <%= javascript_include_tag "json2.min.js", "AC_OETags.min.js", "cytoscapeweb.min.js" %>
+  <%= csrf_meta_tags %>
+  <%= render 'layouts/shim' %>
+  <%= render 'cytoscape_script' %>
+  <style>
+    html, body { height: 100%; width: 100%; padding: 0; margin: 0; }
+    #side_bar { width: 20%; height: 100%; float: right; }
+    #cytoscape_web { width: 80%; height: 100%; float: left; }
+  </style>
+</head>
+<body>
+  <div id="cytoscape_web" style="overflow: hidden;">
 
-<hr>
+    <!--
+    <table class="table table-condensed">
+      <% @get_networks.each do |single_network| %>
+        <tr>
+        <% single_network.each.with_index do |network_element, index| %>
+          <% if index == 0 || index == 1 %>
+            <td><%= network_element %>(<%= @gene_hash[network_element] %>)</td>
+          <% else %>
+            <td><%= network_element %></td>
+          <% end %>
+        <% end %>
+        </tr>
+      <% end %>
+    </table>
+    -->
 
-<% @get_network_weights.each do |single_network_weight| %>
-  <table class="table table-condensed">
-  <tr>
-  <% single_network_weight.each.with_index do |network_weight_element, index| %>
-    <% if index == 0 %>
-      <% @network_weight_key = network_weight_element %>
+  </div>
+
+  <div id="side_bar" style="overflow-x:hidden;">
+
+    <!-- 
+    <div id="demo" data-collapse="accordion">
+      <% @get_network_weights.each.with_index do |single_network_weight, index| %>
+        <h5><%= single_network_weight[0] %>  <%= single_network_weight[1] %></h5>
+        <div>
+        <% @network_weights_hash[single_network_weight[0]].each do |item| %>
+          <p><%= item[0] %>  <%= item[1] %></p>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
+    -->
+
+    <dl>
+      <% @get_network_weights.each.with_index do |single_network_weight, index| %>
+        <dt><%= single_network_weight[0] %>  <%= single_network_weight[1] %></dt>
+        <% @network_weights_hash[single_network_weight[0]].each do |item| %>
+          <dd><%= item[0] %>  <%= item[1] %></dd>
+        <% end %>
+      <% end %>
+    </dl>
+
+    <!--
+    <div class="accordion" id="accordion2">
+      <% @get_network_weights.each.with_index do |single_network_weight, index| %>
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#<%= single_network_weight[0] %>">
+              <%= single_network_weight[0] %>  <%= single_network_weight[1] %>
+            </a>
+          </div>
+          <% if index == 0 %>
+            <div id="<%= single_network_weight[0] %>" class="accordion-body collapse in">
+          <% else %>
+            <div id="<%= single_network_weight[0] %>" class="accordion-body collapse">
+          <% end %>
+            <div class="accordion-inner">
+              <% @network_weights_hash[single_network_weight[0]].each do |item| %>
+                <%= item[0] %>  <%= item[1] %><br>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    -->
+
+    <!--
+    <% @get_network_weights.each do |single_network_weight| %>
+      <table class="table table-condensed">
+      <tr>
+      <% single_network_weight.each.with_index do |network_weight_element, index| %>
+        <% if index == 0 %>
+          <% @network_weight_key = network_weight_element %>
+        <% end %>
+        <td><%= network_weight_element %></td>
+      <% end %>
+      </tr>
+      <% @network_weights_hash[@network_weight_key].each do |item| %>
+        <tr><td></td><td><%= item[0] %></td><td><%= item[1] %></td></tr>
+      <% end %>
+      </table>
     <% end %>
-    <td><%= network_weight_element %></td>
-  <% end %>
-  </tr>
-  <% @network_weights_hash[@network_weight_key].each do |item| %>
-    <tr><td></td><td><%= item[0] %></td><td><%= item[1] %></td></tr>
-  <% end %>
-  </table>
-  <hr>
-<% end %>
+    -->
+
+  </div>
+</body>
+</html>
 

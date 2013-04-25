@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  window.onload=function() {
+    var div_id = "cytoscape_web";
+
+    var network_json = {
+      dataSchema: {
+        nodes: [ { name: "label", type: "string" } ],
+        edges: [ { name: "label", type: "string" } ]
+      },
+      data: {
+        nodes: [
+          <% @gene_list.each do |gene| %>
+            { id: "<%= gene[0] %>", label: "<%= gene[1] %>" },
+          <% end %>
+        ],
+        edges: [
+          <% @get_networks.each do |single_network| %>
+            { id: "<%= single_network[0] %>_<%= single_network[1] %>", target: "<%= single_network[0] %>", source: "<%= single_network[1] %>", label: "<%= single_network[0] %> to <%= single_network[1] %>" },
+          <% end %>
+        ]
+      }
+    };
+
+    var options = {
+      swfPath: "<%= asset_path("swf/CytoscapeWeb") %>",
+      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>"
+    };
+
+    var vis = new org.cytoscapeweb.Visualization(div_id, options);
+
+    var draw_options = {
+      network: network_json,
+    };
+
+    vis.draw(draw_options);
+  }
+</script>
