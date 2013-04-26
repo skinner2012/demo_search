@@ -23,7 +23,19 @@
 
     var options = {
       swfPath: "<%= asset_path("swf/CytoscapeWeb") %>",
-      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>"
+      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>",
+      nodeTooltipsEnabled: true,
+      edgeTooltipsEnabled: true,
+      visualStyle: {
+        global: {
+        },
+        nodes: {
+          tooltipText: "HELLO EDGES"
+        },
+        edges: {
+          tooltipText: "HELLO EDGES"
+        }
+      }
     };
 
     var vis = new org.cytoscapeweb.Visualization(div_id, options);
