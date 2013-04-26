@@ -2,9 +2,9 @@
 <html>
 <head>
   <title><%= full_title(yield(:title)) %></title>
-  <%= stylesheet_link_tag    "application", media: "all" %>
   <%= javascript_include_tag "jquery-1.9.1.js" %>
   <%= javascript_include_tag "jquery.collapse.js" %>
+  <%= stylesheet_link_tag "jquery.collapse.css" %>
   <%= javascript_include_tag "json2.min.js", "AC_OETags.min.js", "cytoscapeweb.min.js" %>
   <%= csrf_meta_tags %>
   <%= render 'layouts/shim' %>
@@ -13,6 +13,10 @@
     html, body { height: 100%; width: 100%; padding: 0; margin: 0; }
     #side_bar { width: 20%; height: 100%; float: right; }
     #cytoscape_web { width: 80%; height: 100%; float: left; }
+    progress { background-color: white; color: green; border: 0; height: 5px; width: 100%; }
+    progress::-webkit-progress-bar { background: white; }
+    progress::-webkit-progress-value { background: green; }
+    progress::-moz-progress-bar { background: green; }
   </style>
 </head>
 <body>
@@ -39,28 +43,30 @@
   </div>
 
   <div id="side_bar" style="overflow-x:hidden;">
-
-    <!-- 
+  
+    <div class="col c2">
     <div id="demo" data-collapse="accordion">
       <% @get_network_weights.each.with_index do |single_network_weight, index| %>
-        <h5><%= single_network_weight[0] %>  <%= single_network_weight[1] %></h5>
+        <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
         <div>
         <% @network_weights_hash[single_network_weight[0]].each do |item| %>
-          <p><%= item[0] %>  <%= item[1] %></p>
+          <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress value="<%= item[1] %>" max="100"></progress></span><br><br></p>
         <% end %>
         </div>
       <% end %>
     </div>
-    -->
+    </div>
 
+    <!--
     <dl>
       <% @get_network_weights.each.with_index do |single_network_weight, index| %>
-        <dt><%= single_network_weight[0] %>  <%= single_network_weight[1] %></dt>
+        <dt><%= single_network_weight[0] %>  <%= single_network_weight[1] %>%</dt>
         <% @network_weights_hash[single_network_weight[0]].each do |item| %>
-          <dd><%= item[0] %>  <%= item[1] %></dd>
+          <dd><%= item[0] %>  <%= item[1] %>%</dd>
         <% end %>
       <% end %>
     </dl>
+    -->
 
     <!--
     <div class="accordion" id="accordion2">

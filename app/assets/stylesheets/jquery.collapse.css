@@ -1,0 +1,39 @@
+.col {
+  width: 100%;
+  float: left;
+}
+.c3 {
+  margin-right:0;
+}
+
+h5 {
+  font: 12px arial, sans-serif;
+  margin: 0;
+  text-align: right;
+}
+
+p {
+  font: 12px arial, sans-serif;
+  padding-left: 20px;
+  text-align: right;
+  border-bottom: 1px solid rgba(0, 0, 0, 1);
+}
+
+h5 a {
+  background: url("/assets/sprite.png") 10px 10px no-repeat;
+  display: block;
+  padding: 10px;
+  padding-left: 30px;
+  margin: 0;
+  color: #000;
+  text-decoration: none;
+  font-weight: normal;
+  border-bottom: 2px solid rgba(0, 0, 0, 1);
+}
+h5.open a { background-position: 13px -25px; }
+h5 + div { padding: 10px; }
+
+h5+div {
+  display: none;
+}
+
