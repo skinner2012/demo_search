@@ -13,10 +13,24 @@
     html, body { height: 100%; width: 100%; padding: 0; margin: 0; }
     #side_bar { width: 20%; height: 100%; float: right; }
     #cytoscape_web { width: 80%; height: 100%; float: left; }
-    progress { background-color: white; color: green; border: 0; height: 5px; width: 100%; }
+
+    progress { background-color: white; border: 0; height: 5px; width: 100%;  }
+    progress.progress_bar1 { color: #8871AD; }
+    progress.progress_bar2 { color: #56AAFF; }
+    progress.progress_bar3 { color: #5F8730; }
+    progress.progress_bar4 { color: #DDAE1C; }
+
     progress::-webkit-progress-bar { background: white; }
-    progress::-webkit-progress-value { background: green; }
-    progress::-moz-progress-bar { background: green; }
+
+    progress.progress_bar1::-webkit-progress-value { background: #8871AD; }
+    progress.progress_bar2::-webkit-progress-value { background: #56AAFF; }
+    progress.progress_bar3::-webkit-progress-value { background: #5F8730; }
+    progress.progress_bar4::-webkit-progress-value { background: #DDAE1C; }
+
+    progress.progress_bar1::-moz-progress-bar { background: #8871AD; }
+    progress.progress_bar2::-moz-progress-bar { background: #56AAFF; }
+    progress.progress_bar3::-moz-progress-bar { background: #5F8730; }
+    progress.progress_bar4::-moz-progress-bar { background: #DDAE1C; }
   </style>
 </head>
 <body>
@@ -47,10 +61,26 @@
     <div class="col c2">
     <div id="demo" data-collapse="accordion">
       <% @get_network_weights.each.with_index do |single_network_weight, index| %>
-        <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
+        <% if single_network_weight[0] == "Co-expression" %>
+          <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress class="progress_bar1" value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
+        <% elsif single_network_weight[0] == "Co-localization" %>
+          <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress class="progress_bar2" value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
+        <% elsif single_network_weight[0] == "Pathway" %>
+          <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress class="progress_bar3" value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
+        <% elsif single_network_weight[0] == "Physical interactions" %>
+          <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress class="progress_bar4" value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>
+        <% end %>
         <div>
         <% @network_weights_hash[single_network_weight[0]].each do |item| %>
-          <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress value="<%= item[1] %>" max="100"></progress></span><br><br></p>
+          <% if single_network_weight[0] == "Co-expression" %>
+            <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress class="progress_bar1" value="<%= item[1] %>" max="100"></progress></span><br><br></p>
+          <% elsif single_network_weight[0] == "Co-localization" %>
+            <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress class="progress_bar2" value="<%= item[1] %>" max="100"></progress></span><br><br></p>
+          <% elsif single_network_weight[0] == "Pathway" %>
+            <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress class="progress_bar3" value="<%= item[1] %>" max="100"></progress></span><br><br></p>
+          <% elsif single_network_weight[0] == "Physical interactions" %>
+            <p><span style="float: left;"><%= item[0] %></span><%= item[1] %>%<br><span style="width: 80%; float:left;"><progress class="progress_bar4" value="<%= item[1] %>" max="100"></progress></span><br><br></p>
+          <% end %>
         <% end %>
         </div>
       <% end %>
