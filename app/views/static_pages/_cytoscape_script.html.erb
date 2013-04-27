@@ -3,45 +3,66 @@
     var div_id = "cytoscape_web";
 
     var network_json = {
+
       dataSchema: {
         nodes: [ { name: "label", type: "string" } ],
         edges: [ { name: "label", type: "string" } ]
       },
+
       data: {
         nodes: [
           <% @gene_list.each do |gene| %>
-            { id: "<%= gene[0] %>", label: "<%= gene[1] %>" },
+            { id: "<%= gene[0] %>", 
+              label: "<%= gene[1] %>" },
           <% end %>
         ],
         edges: [
           <% @get_networks.each do |single_network| %>
-            { id: "<%= single_network[0] %>_<%= single_network[1] %>", target: "<%= single_network[0] %>", source: "<%= single_network[1] %>", label: "<%= single_network[0] %> to <%= single_network[1] %>" },
+            { id: "<%= single_network[0] %>_<%= single_network[1] %>", 
+              target: "<%= single_network[0] %>", 
+              source: "<%= single_network[1] %>", 
+              label: "<%= single_network[0] %> to <%= single_network[1] %>"},
           <% end %>
         ]
       }
+
     };
 
     var options = {
       swfPath: "<%= asset_path("swf/CytoscapeWeb") %>",
-      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>",
+      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>"
+    };
+
+    var visual_style = {
       nodeTooltipsEnabled: true,
       edgeTooltipsEnabled: true,
-      visualStyle: {
-        global: {
-        },
-        nodes: {
-          tooltipText: "HELLO EDGES"
-        },
-        edges: {
-          tooltipText: "HELLO EDGES"
-        }
+      global: {
+      },
+      nodes: {
+        size: 30,
+        color: "#a8a8a8",
+        borderColor: "#a8a8a8",
+        labelFontName: "Arial Black", 
+        labelFontSize: "14",
+        labelFontColor: "#000000",
+        labelFontWeight: "bold",
+        tooltipText: "HELLO EDGES"
+      },
+      edges: {
+        width: 3,
+        tooltipText: "HELLO EDGES"
       }
     };
 
     var vis = new org.cytoscapeweb.Visualization(div_id, options);
 
+    vis.ready(function() {
+      vis.visualStyle(visual_style);
+    });
+
     var draw_options = {
       network: network_json,
+      layout: "CompoundSpringEmbedder",
     };
 
     vis.draw(draw_options);
