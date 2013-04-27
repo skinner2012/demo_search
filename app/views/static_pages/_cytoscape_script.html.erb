@@ -6,7 +6,7 @@
 
       dataSchema: {
         nodes: [ { name: "label", type: "string" } ],
-        edges: [ { name: "label", type: "string" } ]
+        edges: [ { name: "label", type: "string" }, { name: "edge_color", type: "string" } ]
       },
 
       data: {
@@ -21,7 +21,17 @@
             { id: "<%= single_network[0] %>_<%= single_network[1] %>", 
               target: "<%= single_network[0] %>", 
               source: "<%= single_network[1] %>", 
-              label: "<%= single_network[0] %> to <%= single_network[1] %>"},
+              label: "<%= single_network[0] %> to <%= single_network[1] %>",
+              <% if single_network[3] == "Co-expression" %>
+                edge_color: "1",
+              <% elsif single_network[3] == "Co-localization" %>
+                edge_color: "2",
+              <% elsif single_network[3] == "Pathway" %>
+                edge_color: "3",
+              <% elsif single_network[3] == "Physical interactions" %>
+                edge_color: "4",
+              <% end %>
+              },
           <% end %>
         ]
       }
@@ -50,6 +60,17 @@
       },
       edges: {
         width: 3,
+        color: {
+          discreteMapper: {
+            attrName: "edge_color",
+            entries: [
+              { attrValue: 1, value: "#8871AD" },
+              { attrValue: 2, value: "#56AAFF" },
+              { attrValue: 3, value: "#5F8730" },
+              { attrValue: 4, value: "#DDAE1C" }
+            ]
+          }
+        },
         tooltipText: "HELLO EDGES"
       }
     };
