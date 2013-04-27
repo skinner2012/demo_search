@@ -1,19 +1,20 @@
 <script type="text/javascript">
-  window.onload=function() {
+  window.onload = function() {
     var div_id = "cytoscape_web";
 
     var network_json = {
 
       dataSchema: {
-        nodes: [ { name: "label", type: "string" } ],
-        edges: [ { name: "label", type: "string" }, { name: "edge_color", type: "string" } ]
+        nodes: [ { name: "label", type: "string" }, { name: "gene_id", type: "string" } ],
+        edges: [ { name: "label", type: "string" }, { name: "edge_color", type: "string" }, { name: "link_type", type: "string" }, { name: "weight", type: "string" }, { name: "founder", type: "string" } ]
       },
 
       data: {
         nodes: [
           <% @gene_list.each do |gene| %>
             { id: "<%= gene[0] %>", 
-              label: "<%= gene[1] %>" },
+              label: "<%= gene[1] %>",
+              gene_id: "<%= gene[0] %>" },
           <% end %>
         ],
         edges: [
@@ -21,7 +22,10 @@
             { id: "<%= single_network[0] %>_<%= single_network[1] %>", 
               target: "<%= single_network[0] %>", 
               source: "<%= single_network[1] %>", 
-              label: "<%= single_network[0] %> to <%= single_network[1] %>",
+              label: "<%= @gene_hash[single_network[0]] %> - <%= @gene_hash[single_network[1]] %>",
+              link_type: "<%= single_network[3] %>",
+              weight: "<%= single_network[2] %>",
+              founder: "<%= single_network[4] %>",
               <% if single_network[3] == "Co-expression" %>
                 edge_color: "1",
               <% elsif single_network[3] == "Co-localization" %>
@@ -40,13 +44,14 @@
 
     var options = {
       swfPath: "<%= asset_path("swf/CytoscapeWeb") %>",
-      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>"
+      flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>",
     };
 
     var visual_style = {
       nodeTooltipsEnabled: true,
       edgeTooltipsEnabled: true,
       global: {
+        tooltipDelay: 1000
       },
       nodes: {
         size: 30,
@@ -56,7 +61,7 @@
         labelFontSize: "14",
         labelFontColor: "#000000",
         labelFontWeight: "bold",
-        tooltipText: "HELLO EDGES"
+        tooltipText: "HELLO SKINNER 1",
       },
       edges: {
         width: 3,
@@ -71,7 +76,6 @@
             ]
           }
         },
-        tooltipText: "HELLO EDGES"
       }
     };
 
@@ -79,6 +83,58 @@
 
     vis.ready(function() {
       vis.visualStyle(visual_style);
+
+      vis.addListener("click", "nodes", function(event) { 
+        handle_click(event);
+      })
+      .addListener("click", "edges", function(event) { 
+        handle_click(event);
+      });
+
+      function handle_click(event) {
+        var target = event.target;
+
+        if (event.group == "nodes") {
+          for (var i in target.data) {
+            var variable_name = i;
+            var gene_id;
+            var gene_name;
+
+            if (variable_name == "label") {
+              gene_name = target.data[i];
+            } else if (variable_name == "gene_id") {
+              gene_id = target.data[i];
+            }
+          }
+
+          // alert(gene_id + " " + gene_name);
+           $(this).qtip({
+             content: 'Hello, CytoscapeWeb',
+             show: { delay: 0 },
+             hide: { when: { event: 'unfocus' } }
+           });
+        } else if (event.group == "edges") {
+          for (var i in target.data) {
+            var variable_name = i;
+            var link_label;
+            var link_type;
+            var weight;
+            var founder;
+
+            if (variable_name == "label") {
+              link_label = target.data[i];
+            } else if (variable_name == "link_type") {
+              link_type = target.data[i];
+            } else if (variable_name == "weight") {
+              weight = target.data[i];
+            } else if (variable_name == "founder") {
+              founder = target.data[i];
+            }
+          }
+          
+          alert(link_label + " " + link_type + " " + founder + " " + weight);
+        }
+      }
     });
 
     var draw_options = {
