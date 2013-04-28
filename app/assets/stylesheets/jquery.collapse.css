@@ -2,6 +2,7 @@
   width: 100%;
   float: left;
 }
+
 .c3 {
   margin-right:0;
 }
@@ -20,7 +21,6 @@ p {
 }
 
 h5 a {
-  background: url("/assets/sprite.png") 10px 10px no-repeat;
   display: block;
   padding: 10px;
   padding-left: 30px;
@@ -29,10 +29,6 @@ h5 a {
   text-decoration: none;
   font-weight: normal;
   border-bottom: 2px solid rgba(0, 0, 0, 1);
-}
-
-h5.open a { 
-  background-position: 13px -25px; 
 }
 
 h5 + div { 
