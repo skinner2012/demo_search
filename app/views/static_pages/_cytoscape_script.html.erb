@@ -3,10 +3,15 @@
     var div_id = "cytoscape_web";
 
     var network_json = {
-
       dataSchema: {
-        nodes: [ { name: "label", type: "string" }, { name: "gene_id", type: "string" } ],
-        edges: [ { name: "label", type: "string" }, { name: "edge_color", type: "string" }, { name: "link_type", type: "string" }, { name: "weight", type: "string" }, { name: "founder", type: "string" } ]
+        nodes: [ { name: "label", type: "string" }, 
+                 { name: "gene_id", type: "string" } 
+               ],
+        edges: [ { name: "label", type: "string" }, 
+                 { name: "edge_color", type: "string" }, 
+                 { name: "link_type", type: "string" }, 
+                 { name: "weight", type: "string" }, 
+                 { name: "founder", type: "string" } ]
       },
 
       data: {
@@ -48,8 +53,6 @@
     };
 
     var visual_style = {
-      nodeTooltipsEnabled: true,
-      edgeTooltipsEnabled: true,
       global: {
         tooltipDelay: 1000
       },
@@ -61,7 +64,7 @@
         labelFontSize: "14",
         labelFontColor: "#000000",
         labelFontWeight: "bold",
-        tooltipText: "HELLO SKINNER 1",
+        // tooltipText: "HELLO SKINNER 1",
       },
       edges: {
         width: 3,
@@ -91,8 +94,14 @@
         handle_click(event);
       });
 
+      vis.nodeTooltipsEnabled(false);
+      vis.edgeTooltipsEnabled(false);
+
       function handle_click(event) {
         var target = event.target;
+
+        var x = $("#cytoscape_web").offset().left + target.x;
+        var y = $("#cytoscape_web").offset().top + target.y;
 
         if (event.group == "nodes") {
           for (var i in target.data) {
@@ -107,12 +116,45 @@
             }
           }
 
-          // alert(gene_id + " " + gene_name);
-           $(this).qtip({
-             content: 'Hello, CytoscapeWeb',
-             show: { delay: 0 },
-             hide: { when: { event: 'unfocus' } }
-           });
+          alert(gene_id + " " + gene_name);
+          // alert(x + ", " + y);
+
+          // jQuery(document.body).qtip({
+          $("body").qtip({
+            content: {
+              text: 'Hello, CytoscapeWeb',
+              title: 'Hello Skinner'
+            },
+            position: {
+              // container: $("#cytoscape_web"),
+              // viewport: $(window),
+              target: false,
+              type: "absolute",
+              corner: { tooltip: position, target: "leftTop" },
+              adjust: { mouse: false, x: x, y: y, scroll: false, resize: false }
+            },
+            show: { 
+              delay: 0,
+              when: false, 
+              effect: { type: "fade", length: 0 }, 
+              ready: true
+            },
+            hide: { 
+              delay: 0, 
+              effect: { type: "fade", length: 0 }, 
+              when: { event: "unfocus" }, 
+              fixed: true 
+            },
+            style: {
+              border: { width: 1, radius: 8 },
+              width: { min: ( event.group == "nodes" ? 0 : maxW ), max: ( maxW ) },
+              screen: true,
+              padding: outer_padding, 
+              textAlign: 'left',
+              name: 'light',
+              tip: true
+            }
+          });
         } else if (event.group == "edges") {
           for (var i in target.data) {
             var variable_name = i;
@@ -145,3 +187,4 @@
     vis.draw(draw_options);
   }
 </script>
+

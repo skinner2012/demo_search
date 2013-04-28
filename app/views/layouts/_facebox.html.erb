@@ -12,7 +12,9 @@
           escape_ontology_name = escape(ontology_array[0]["value"]);
           window.location.href = "/details?select_ontology=" + escape_ontology_name + "&select_term=" + escape_term_name;
         } else {
-          facebox_source = "<ul class=\"nav nav-list\"><li><p class=\"muted\">The term <strong>" + term_name + "</strong> has been found in multiple ontologies. Please select the ontology: </p></li><li class=\"divider\">";
+          // facebox_source = "<ul class=\"nav nav-list\"><li><p class=\"muted\">The term <strong>" + term_name + "</strong> has been found in multiple ontologies. Please select the ontology: </p></li><li class=\"divider\">";
+
+          facebox_source = "The term <strong>" + term_name + "</strong> has been found in multiple ontologies. Please select the ontology: <hr><ul>";
 
           $.each(ontology_array, function (index, value) {
             escape_ontology_name = escape(value["value"]);

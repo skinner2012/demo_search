@@ -2,11 +2,11 @@
 <html>
 <head>
   <title><%= full_title(yield(:title)) %></title>
-  <%= javascript_include_tag "jquery-1.9.1.js", "jquery.collapse.js" %>
+  <%= javascript_include_tag "jquery-1.9.1.min.js", "jquery-migrate-1.1.1.min.js", "jquery.collapse.js" %>
   <%= stylesheet_link_tag "jquery.collapse.css" %>
-  <%= javascript_include_tag "jquery-1.3.2.min.js", "jquery.qtip-1.0.0-rc3.min.js" %>
   <%= javascript_include_tag "json2.min.js", "AC_OETags.min.js", "cytoscapeweb.min.js" %>
   <%= render 'cytoscape_script' %>
+  <%= javascript_include_tag "jquery-1.3.2.min.js", "jquery.qtip-1.0.0-rc3.min.js" %>
   <style>
     html, body { height: 100%; width: 100%; padding: 0; margin: 0; }
     #side_bar { width: 20%; height: 100%; float: right; }
