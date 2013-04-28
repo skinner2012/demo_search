@@ -30,8 +30,14 @@ h5 a {
   font-weight: normal;
   border-bottom: 2px solid rgba(0, 0, 0, 1);
 }
-h5.open a { background-position: 13px -25px; }
-h5 + div { padding: 10px; }
+
+h5.open a { 
+  background-position: 13px -25px; 
+}
+
+h5 + div { 
+  padding: 10px; 
+}
 
 h5+div {
   display: none;
