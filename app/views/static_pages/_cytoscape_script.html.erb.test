@@ -1,0 +1,122 @@
+        <script type="text/javascript">
+            window.onload = function() {
+                // id of Cytoscape Web container div
+                var div_id = "cytoscape_web";
+                
+                // create a network model object
+                var network_json = {
+                        // you need to specify a data schema for custom attributes!
+                        dataSchema: {
+                            nodes: [ { name: "label", type: "string" },
+                                     { name: "foo", type: "string" }
+                                ],
+                            edges: [ { name: "label", type: "string" },
+                                     { name: "bar", type: "string" }
+                            ]
+                        },
+                        // NOTE the custom attributes on nodes and edges
+                        data: {
+                            nodes: [ { id: "1", label: "1", foo: "Is this the real life?" },
+                                     { id: "2", label: "2", foo: "Is this just fantasy?" }
+                            ],
+                            edges: [ { id: "2to1", target: "1", source: "2", label: "2 to 1", bar: "Caught in a landslide..." }
+                            ]
+                        }
+                };
+                
+                // initialization options
+                var options = {
+                	swfPath: "<%= asset_path("swf/CytoscapeWeb") %>",
+			flashInstallerPath: "<%= asset_path("swf/playerProductInstall") %>"
+                };
+                
+                var vis = new org.cytoscapeweb.Visualization(div_id, options);
+                
+                // callback when Cytoscape Web has finished drawing
+                vis.ready(function() {
+                
+                    // add a listener for when nodes and edges are clicked
+                    vis.addListener("click", "nodes", function(event) {
+                        handle_click(event);
+                    })
+                    .addListener("click", "edges", function(event) {
+                        handle_click(event);
+                    });
+                    
+                    function handle_click(event) {
+                         var target = event.target;
+                         
+                         // alert("event.group = " + event.group);
+			 
+			 // $("body").qtip({ context: "HELLO SKINNER" });
+			 // jQuery(document.body).qtip({ context: "HELLO SKINNER" });
+
+         // var x = $("#cytoscape_web").offset().left + target.x;
+         // var y = $("#cytoscape_web").offset().top + target.y;
+
+	var x = 300
+	var y = 300
+
+
+          $("body").qtip({
+          // jQuery(document.body).qtip({
+             content: {
+               text: 'Hello, CytoscapeWeb',
+               title: 'Hello Skinner'
+             },
+             position: {
+               // container: $("#cytoscape_web"),
+               // viewport: $(window),
+               target: false,
+               type: "absolute",
+               corner: { target: "leftTop", tooltip: 'leftMiddle' },
+               adjust: { screen: true, mouse: false, x: 20, y: 0, scroll: false, resize: false }
+             },
+             show: {
+               solo: true,
+               delay: 0,
+               when: false,
+               effect: { type: "fade", length: 0 },
+               ready: true
+             },
+             hide: {
+               delay: 0,
+               effect: { type: "fade", length: 0 },
+               when: { event: "unfocus" },
+               fixed: true
+             },
+             style: {
+               border: { width: 3, radius: 8, color: '#C1CFDD' },
+	       width: 570, 
+               color: '#FFFFFF',
+               background: '#132531',
+               screen: true,
+               padding: outer_padding,
+               textAlign: 'left',
+               name: 'light',
+               tip: 'leftMiddle'
+             }
+           });
+
+
+                         for (var i in target.data) {
+                            var variable_name = i;
+                            var variable_value = target.data[i];
+                            // alert( "event.target.data." + variable_name + " = " + variable_value );
+                         }
+                    }
+                    
+                });
+ 
+                // draw options
+                var draw_options = {
+                    // your data goes here
+                    network: network_json,
+                    // hide pan zoom
+                    panZoomControlVisible: false 
+                };
+                
+                vis.draw(draw_options);
+            };
+        </script>
+

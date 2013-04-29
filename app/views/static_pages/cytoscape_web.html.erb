@@ -57,7 +57,7 @@
   <div id="side_bar" style="overflow-x:hidden;">
   
     <div class="col c2">
-    <div id="demo" data-collapse="accordion">
+    <div id="demo" data-collapse>
       <% @get_network_weights.each.with_index do |single_network_weight, index| %>
         <% if single_network_weight[0] == "Co-expression" %>
           <h5><strong><span style="float: left;"><%= single_network_weight[0] %></span><%= single_network_weight[1] %>%</strong><br><span style="width: 80%; float:left;"><progress class="progress_bar1" value="<%= single_network_weight[1] %>" max="100"></progress></span><br></h5>

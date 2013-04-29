@@ -21,6 +21,7 @@ p {
 }
 
 h5 a {
+  background: url("/assets/icon_expand.png") 5px 13px no-repeat;
   display: block;
   padding: 10px;
   padding-left: 30px;
@@ -29,6 +30,10 @@ h5 a {
   text-decoration: none;
   font-weight: normal;
   border-bottom: 2px solid rgba(0, 0, 0, 1);
+}
+
+h5.open a { 
+  background: url("/assets/icon_collapse.png") 5px 13px no-repeat;
 }
 
 h5 + div { 
