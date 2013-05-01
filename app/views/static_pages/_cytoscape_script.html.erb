@@ -64,7 +64,6 @@
         labelFontSize: "14",
         labelFontColor: "#000000",
         labelFontWeight: "bold",
-        // tooltipText: "HELLO SKINNER 1",
       },
       edges: {
         width: 3,
@@ -88,95 +87,126 @@
       vis.visualStyle(visual_style);
 
       vis.addListener("click", "nodes", function(event) { 
-        handle_click(event);
-      })
-      .addListener("click", "edges", function(event) { 
-        handle_click(event);
+        handle_nodes_click(event);
       });
 
-      vis.nodeTooltipsEnabled(false);
-      vis.edgeTooltipsEnabled(false);
+      vis.addListener("click", "edges", function(event) { 
+        handle_edges_click(event);
+      });
 
-      function handle_click(event) {
+      function handle_nodes_click(event) {
         var target = event.target;
+        var x = target.x + 10;
+        var y = target.y + 10;
 
-        var x = $("#cytoscape_web").offset().left + target.x;
-        var y = $("#cytoscape_web").offset().top + target.y;
+        for (var i in target.data) {
+          var variable_name = i;
+          var gene_id;
+          var gene_name;
 
-        if (event.group == "nodes") {
-          for (var i in target.data) {
-            var variable_name = i;
-            var gene_id;
-            var gene_name;
-
-            if (variable_name == "label") {
-              gene_name = target.data[i];
-            } else if (variable_name == "gene_id") {
-              gene_id = target.data[i];
-            }
+          if (variable_name == "label") {
+            gene_name = target.data[i];
+          } else if (variable_name == "gene_id") {
+            gene_id = target.data[i];
           }
-
-          alert(gene_id + " " + gene_name);
-          // alert(x + ", " + y);
-
-          // jQuery(document.body).qtip({
-          $("body").qtip({
-            content: {
-              text: 'Hello, CytoscapeWeb',
-              title: 'Hello Skinner'
-            },
-            position: {
-              // container: $("#cytoscape_web"),
-              // viewport: $(window),
-              target: false,
-              type: "absolute",
-              corner: { tooltip: position, target: "leftTop" },
-              adjust: { mouse: false, x: x, y: y, scroll: false, resize: false }
-            },
-            show: { 
-              delay: 0,
-              when: false, 
-              effect: { type: "fade", length: 0 }, 
-              ready: true
-            },
-            hide: { 
-              delay: 0, 
-              effect: { type: "fade", length: 0 }, 
-              when: { event: "unfocus" }, 
-              fixed: true 
-            },
-            style: {
-              border: { width: 1, radius: 8 },
-              width: { min: ( event.group == "nodes" ? 0 : maxW ), max: ( maxW ) },
-              screen: true,
-              padding: outer_padding, 
-              textAlign: 'left',
-              name: 'light',
-              tip: true
-            }
-          });
-        } else if (event.group == "edges") {
-          for (var i in target.data) {
-            var variable_name = i;
-            var link_label;
-            var link_type;
-            var weight;
-            var founder;
-
-            if (variable_name == "label") {
-              link_label = target.data[i];
-            } else if (variable_name == "link_type") {
-              link_type = target.data[i];
-            } else if (variable_name == "weight") {
-              weight = target.data[i];
-            } else if (variable_name == "founder") {
-              founder = target.data[i];
-            }
-          }
-          
-          alert(link_label + " " + link_type + " " + founder + " " + weight);
         }
-      }
+
+        $('#cytoscape_web').qtip({
+          content: {
+            text: 'ID: ' + gene_id,
+            title: gene_name
+          },
+          position: {
+            target: 'mouse',
+            type: 'absolute',
+            corner: { tooltip: 'bottomLeft', target: 'topRight' },
+            adjust: { screen: true, mouse: false, x: x, y: y, scroll: false, resize: false }
+          },
+          show: { 
+            delay: 0,
+            solo: true,
+            ready: true,
+            when: { target: false, event: 'click' },
+            effect: { type: "fade", length: 0 }
+          },
+          hide: { 
+            delay: 0,
+            fixed: true, 
+            when: { target: false, event: "unfocus" },
+            effect: { type: "fade", length: 0 }
+          },
+          style: {
+            name: 'light',
+            width: { min: 75, max: 250 },
+            border: { width: 1, radius: 3, color: '#d3d3d3' },
+            'font-family': 'Arial',
+            'font-size': 12,
+            title: { 'font-family': 'Arial', 'font-size': 12 },
+            tip: true
+          }
+        });
+      };
+
+      function handle_edges_click(event) {
+        var target = event.target;
+        var x = event.mouseX + 2;
+        var y = event.mouseY - 40;
+
+        for (var i in target.data) {
+          var variable_name = i;
+          var link_label;
+          var link_type;
+          var weight;
+          var founder;
+
+          if (variable_name == "label") {
+            link_label = target.data[i];
+          } else if (variable_name == "link_type") {
+            link_type = target.data[i];
+          } else if (variable_name == "weight") {
+            weight = target.data[i];
+          } else if (variable_name == "founder") {
+            founder = target.data[i];
+          }
+        }
+          
+        var show_network_weights = "<table><tr><td><strong>" + link_type + "</strong></td><td><strong>Weight</strong></td></tr><tr><td>" + founder + "</td><td>" + weight + "</td></tr></table>";
+
+        $('#cytoscape_web').qtip({
+          content: {
+            text: show_network_weights,
+            title: link_label
+          },
+          position: {
+            target: 'mouse',
+            type: 'absolute',
+            corner: { tooltip: 'leftMiddle', target: 'rightMiddle' },
+            adjust: { screen: true, mouse: false, x: x, y: y, scroll: false, resize: false }
+          },
+          show: {
+            delay: 0,
+            solo: true,
+            ready: true,
+            when: { target: false, event: 'click' },
+            effect: { type: "fade", length: 0 }
+          },
+          hide: {
+            delay: 0,
+            fixed: true,
+            when: { target: false, event: "unfocus" },
+            effect: { type: "fade", length: 0 }
+          },
+          style: {
+            name: 'light',
+            width: { min: 75, max: 500 },
+            tip: 'leftMiddle',
+            border: { width: 1, radius: 3, color: '#d3d3d3' },
+            'font-family': 'Arial',
+            'font-size': 12,
+            title: { 'font-family': 'Arial', 'font-size': 12 }
+          }
+        });
+      };
     });
 
     var draw_options = {
