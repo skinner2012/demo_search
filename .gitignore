@@ -14,7 +14,6 @@
 *.rbc
 *.sassc
 .sass-cache
-capybara-*.html
 .rspec
 .rvmrc
 /.bundle
@@ -26,7 +25,4 @@ capybara-*.html
 /public/assets/*
 /coverage/
 /spec/tmp/*
-**.orig
-rerun.txt
-pickle-email-*.html
 .project
